@@ -1,0 +1,6 @@
+#!/bin/bash
+
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+terraform init
+terraform apply -auto-approve "$DIR/outputs/tf.output" 

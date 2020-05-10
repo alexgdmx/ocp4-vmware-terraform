@@ -1,0 +1,9 @@
+openshift-install
+ocp-key
+ocp-key.pub
+.python-version
+deploy/.openshift*
+terraform/.terraform
+terraform.*
+terraform/*.ova
+terraform/govc_env

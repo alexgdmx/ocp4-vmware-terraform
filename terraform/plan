@@ -1,0 +1,6 @@
+#!/bin/bash
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+terraform fmt .
+terraform init
+terraform plan -var="full_path=${DIR}" -var-file=${DIR}/vars/common.tfvars -var-file=${DIR}/vars/machine_data.tfvars -out "$DIR/outputs/tf.output" $1
