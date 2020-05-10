@@ -111,7 +111,8 @@ The Python script does the same for **master.ign** and **worker.ign**.
 (vmware) alex@:/ocp4-vmware-terraform $ ./create_base64_files
 (vmware) alex@:/ocp4-vmware-terraform $
 ```
-2. Change to the terraform folder. Unfortunately the terraform provider can't deploy an OVF/OVA template, seems it has a bug. We will use [govc](https://github.com/vmware/govmomi/tree/master/govc) to upload the ova file and create the template.
+2. Modify the file ``terraform/vars/common.tfvars`` with the information of your vmware server. Modify thge file ``terraform/main.tf``with the propper values of your vmware; datacenter, host, network, resource filder, etc.
+3. Change to the terraform folder. Unfortunately the terraform provider can't deploy an OVF/OVA template, seems it has a bug. We will use [govc](https://github.com/vmware/govmomi/tree/master/govc) to upload the ova file and create the template.
 ```bash
 (vmware) alex@:/ocp4-vmware-terraform $ cd terraform
 alex@:/../terraform $ govc import.ova -dc="datacenter" -ds="datastore1" -pool="sni/Resources" -name="rhcos-4.4.3-x86_64-vmware.x86_64.ova" "https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/latest/latest/rhcos-4.4.3-x86_64-vmware.x86_64.ova"
@@ -120,7 +121,7 @@ alex@:/../terraform $ govc vm.markastemplate -dc="datacenter" "rhcos-4.4.3-x86_6
 ```
 ![OVA template](images/ova_template.jpg "OVA template")
 
-3. Create a plan in terraform. I divided it into 4 modules: bootstrap, master, worker and infra. We can create a plan to create 8 VM's (3 masters, 2 workers, 2 infras, and the bootstrap); but I recommend creating one plan at time, starting with the bootstrap.
+4. Create a plan in terraform. I divided it into 4 modules: bootstrap, master, worker and infra. We can create a plan to create 8 VM's (3 masters, 2 workers, 2 infras, and the bootstrap); but I recommend creating one plan at time, starting with the bootstrap.
 ```bash
 alex@:/../terraform $ ./plan -target=module.bootstrap
 Initializing modules...
@@ -152,7 +153,7 @@ To perform exactly these actions, run the following command to apply:
 .
 .
 ```
-4. Apply the plan created.
+5. Apply the plan created.
 ```bash
 alex@:/../terraform $ ./apply
 Initializing modules...
@@ -207,7 +208,7 @@ State path: terraform.tfstate
 The output above shows 2 resources added, 1 is the folder ``ocp4`` and the 2nd is the VM bootstrap.
 ![Boostrap created](images/bootstrap.jpg "Folder and Boostrap created")
 
-5. Repeat the the plan/apply for the masters, workers and infra (in case that you have).
+6. Repeat the the plan/apply for the masters, workers and infra (in case that you have).
 ```bash
 alex@:/../terraform $ ./plan -target=module.master
 .
@@ -240,7 +241,7 @@ alex@:/../terraform $ ./apply
 ![Master completed](images/master.jpg "Master completed")
 
 #### Working manually with vmware
-If you want to create the VM machines manually you can copy/paste the base64 strings to the manual procedure in vmware.
+If you want to create the VM machines manually you can copy/paste the base64 strings to the manual procedure in vmware. Go to ``terraform/vars/machine_data.tfvars`` you can see the values for each server in base64 encoding.
 ![Manual procedire](images/manual.jpg "Manual creation from template VMWare")
 
 
