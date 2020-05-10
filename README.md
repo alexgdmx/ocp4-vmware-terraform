@@ -111,7 +111,8 @@ The Python script does the same for **master.ign** and **worker.ign**.
 (vmware) alex@:/ocp4-vmware-terraform $ ./create_base64_files
 (vmware) alex@:/ocp4-vmware-terraform $
 ```
-2. Modify the file ``terraform/vars/common.tfvars`` with the information of your vmware server. Modify thge file ``terraform/main.tf``with the propper values of your vmware; datacenter, host, network, resource filder, etc.
+2. Modify the file ``terraform/vars/common.tfvars`` with the information of your vmware server.
+
 3. Change to the terraform folder. Unfortunately the terraform provider can't deploy an OVF/OVA template, seems it has a bug. We will use [govc](https://github.com/vmware/govmomi/tree/master/govc) to upload the ova file and create the template.
 ```bash
 (vmware) alex@:/ocp4-vmware-terraform $ cd terraform

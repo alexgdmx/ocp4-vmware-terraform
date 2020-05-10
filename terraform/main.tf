@@ -15,6 +15,14 @@ variable vsphere_server {}
 variable ocp_cluster_name {}
 variable full_path {}
 variable virtual_machines {}
+variable datacenter {}
+variable datastore {}
+variable cluster {}
+variable network {}
+variable resorurce_pool {}
+variable host {}
+variable template {}
+
 
 provider "vsphere" {
   user           = var.vsphere_user
@@ -25,16 +33,16 @@ provider "vsphere" {
 }
 
 data "vsphere_datacenter" "dc" {
-  name = "BHM"
+  name = var
 }
 
 data "vsphere_datastore" "datastore" {
-  name          = "datastore1"
+  name          = var.datastore
   datacenter_id = data.vsphere_datacenter.dc.id
 }
 
 data "vsphere_compute_cluster" "sni" {
-  name          = "sni"
+  name          = var.cluster
   datacenter_id = data.vsphere_datacenter.dc.id
 }
 
@@ -45,22 +53,22 @@ resource "vsphere_folder" "cluster" {
 }
 
 data "vsphere_network" "network" {
-  name          = "VM Network"
+  name          = var.network
   datacenter_id = data.vsphere_datacenter.dc.id
 }
 
 data "vsphere_resource_pool" "sni" {
-  name          = "sni/Resources"
+  name          = var.resource_pool
   datacenter_id = data.vsphere_datacenter.dc.id
 }
 
 data "vsphere_host" "esxi67" {
-  name          = "esxi67.sni.com.mx"
+  name          = var.host
   datacenter_id = data.vsphere_datacenter.dc.id
 }
 
 data "vsphere_virtual_machine" "rhcos_template" {
-  name          = "rhcos-4.4.3-x86_64-vmware.x86_64.ova"
+  name          = var.template
   datacenter_id = data.vsphere_datacenter.dc.id
 }
 
