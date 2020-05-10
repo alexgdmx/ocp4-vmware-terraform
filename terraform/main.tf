@@ -33,7 +33,7 @@ provider "vsphere" {
 }
 
 data "vsphere_datacenter" "dc" {
-  name = var
+  name = var.datacenter 
 }
 
 data "vsphere_datastore" "datastore" {
