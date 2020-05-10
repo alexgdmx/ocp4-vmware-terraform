@@ -296,3 +296,5 @@ References
 - https://www.terraform.io/
 - https://github.com/terraform-providers/terraform-provider-vsphere
 - https://github.com/vmware/govmomi/tree/master/govc
+- https://coreos.com/ignition/docs/latest/network-configuration.html
+- https://coreos.com/ignition/docs/latest/examples.html
