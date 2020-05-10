@@ -19,7 +19,7 @@ variable datacenter {}
 variable datastore {}
 variable cluster {}
 variable network {}
-variable resorurce_pool {}
+variable resource_pool {}
 variable host {}
 variable template {}
 
@@ -33,7 +33,7 @@ provider "vsphere" {
 }
 
 data "vsphere_datacenter" "dc" {
-  name = var.datacenter 
+  name = var.datacenter
 }
 
 data "vsphere_datastore" "datastore" {
