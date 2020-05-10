@@ -7,6 +7,8 @@ OCP requires that all DNS configurations be in place. VMWare requires that the D
 
 Sometimes we need to do a **["bare metal"](https://docs.openshift.com/container-platform/4.3/installing/installing_bare_metal/installing-bare-metal.html)** installation over vmware to set the network configuration with kernel parameters at boot (ip, gateway, nameserver, etc.).
 
+The coreos [documentation](https://coreos.com/ignition/docs/latest/network-configuration.html) explain how to create configurations using ignition files. I created a python script to put the network configuration using the ignition files created by the openshift-install program.
+
 #### How does it work?
 When the VM boots, it will take the first IP provided by the DHCP server (probably will not be the IP set by the script). ``(...dhclient[836]: bound to 10.56.240.99 -- renewal in 18253 seconds.)``
 
