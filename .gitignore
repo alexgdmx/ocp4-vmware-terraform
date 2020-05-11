@@ -7,6 +7,4 @@ terraform/.terraform
 terraform.*
 terraform/*.ova
 terraform/govc_env
-terraform/vars/common.tfvars
-install-config.yaml
 deploy/auth/*
