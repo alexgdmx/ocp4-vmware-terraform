@@ -8,7 +8,7 @@
 # __status__ = "Dev"
 
 vsphere_user     = "administrator@sni.com.mx"
-vsphere_password = "yadayadayada"
+vsphere_password = "Alexgd@007"
 vsphere_server   = "vcenter.sni.com.mx"
 
 ocp_cluster_name = "ocp4"

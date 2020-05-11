@@ -15,7 +15,8 @@ resource "vsphere_virtual_machine" "clone" {
   host_system_id   = var.host_system_id
   datastore_id     = var.datastore_id
   enable_disk_uuid = true
-  wait_for_guest_net_timeout = 20
+  wait_for_guest_net_timeout = -1
+  wait_for_guest_net_routable = false
 
   num_cpus = 4
   memory   = 16384
