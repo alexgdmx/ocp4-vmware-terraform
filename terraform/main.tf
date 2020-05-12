@@ -72,6 +72,10 @@ data "vsphere_virtual_machine" "rhcos_template" {
   datacenter_id = data.vsphere_datacenter.dc.id
 }
 
+data "local_file" "master" {
+  filename = "${path.module}/../deploy/master.ign"
+}
+
 module "bootstrap" {
   source           = "./modules/clone_from_template"
   folder           = vsphere_folder.cluster.path
