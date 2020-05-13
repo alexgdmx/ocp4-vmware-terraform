@@ -7,6 +7,7 @@
 # __email__ = "alexgd.devops@gmail.com"
 # __status__ = "Dev"
 
+
 resource "vsphere_virtual_machine" "clone" {
   count            = length(var.vm_data)
   name             = tomap(var.vm_data[count.index]).name
@@ -29,7 +30,7 @@ resource "vsphere_virtual_machine" "clone" {
 
   disk {
     # eagerly_scrub    = false
-    thin_provisioned = false
+    thin_provisioned = true
     label            = "disk00"
     size             = 120
   }
@@ -45,8 +46,4 @@ resource "vsphere_virtual_machine" "clone" {
       "guestinfo.ignition.config.data.encoding" = "base64"
     }
   }
-}
-
-output vm_data {
-  value = var.vm_data
 }

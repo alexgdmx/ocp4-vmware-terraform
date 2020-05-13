@@ -6,5 +6,8 @@ deploy/.openshift*
 terraform/.terraform
 terraform.*
 terraform/*.ova
+terraform/*.ovf
+terraform/*.vmdk
 terraform/govc_env
 deploy/auth/*
+install-config.yaml

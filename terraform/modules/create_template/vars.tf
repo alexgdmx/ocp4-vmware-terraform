@@ -7,7 +7,7 @@
 # __email__ = "alexgd.devops@gmail.com"
 # __status__ = "Dev"
 
-variable "clone_name" {
+variable "name" {
   default = ""
 }
 
@@ -19,46 +19,16 @@ variable "resource_pool_id" {
   default = ""
 }
 
-variable "host_system_id" {
+variable "host" {
   default = ""
 }
 
-variable "datastore_id" {
+variable "datastore" {
   default = ""
 }
 
-variable "guest_id" {
+variable "datacenter" {
   default = ""
 }
 
-variable "network_id" {
-  default = ""
-}
-
-variable "adapter_type" {
-  default = ""
-}
-
-variable "template_uuid" {
-  default = ""
-}
-
-variable "ignition_config_data" {
-  default = ""
-}
-
-variable "vm_data" {
-  type = list
-}
-
-variable node_network {
-  default = {}
-}
-
-variable cluster_name {
-  default = ""
-}
-
-variable node_config {
-  default = {}
-}
+variable "local_ovf" {}

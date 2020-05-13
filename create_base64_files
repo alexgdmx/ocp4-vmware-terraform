@@ -54,7 +54,12 @@ machines = {
     'infra': {
         'ips': [18, 19],
         'hosts': ['infra01', 'infra02']
-    }
+    },
+    'logging': {
+        'ips': [20, 21],
+        'hosts': ['logging01', 'logging02']
+    },
+
 }
 
 

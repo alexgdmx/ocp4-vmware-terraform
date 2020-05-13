@@ -1,0 +1,10 @@
+TYPE=Ethernet
+BOOTPROTO=none
+NAME=ens192
+DEVICE=ens192
+ONBOOT=yes
+IPADDR=${ip_address}
+PREFIX=${net_mask}
+GATEWAY=${gateway}
+DOMAIN=${domain}
+DNS1=${dns}
