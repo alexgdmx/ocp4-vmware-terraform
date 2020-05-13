@@ -4,7 +4,7 @@ ocp-key.pub
 .python-version
 deploy/.openshift*
 terraform/.terraform
-terraform.*
+terraform/terraform.*
 terraform/*.ova
 terraform/*.ovf
 terraform/*.vmdk
