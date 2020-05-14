@@ -14,15 +14,14 @@ variable vsphere_password {}
 variable vsphere_server {}
 variable ocp_cluster_name {}
 variable full_path {}
-variable virtual_machines {}
 variable datacenter {}
 variable datastore {}
-variable cluster {}
 variable network {}
 variable resource_pool {}
 variable host {}
 variable template {}
 variable node_network {}
+variable url_ignition {}
 variable node_configs {}
 
 provider "vsphere" {
@@ -39,11 +38,6 @@ data "vsphere_datacenter" "dc" {
 
 data "vsphere_datastore" "datastore" {
   name          = var.datastore
-  datacenter_id = data.vsphere_datacenter.dc.id
-}
-
-data "vsphere_compute_cluster" "sni" {
-  name          = var.cluster
   datacenter_id = data.vsphere_datacenter.dc.id
 }
 
@@ -79,9 +73,51 @@ module "template" {
   folder           = vsphere_folder.cluster.path
 }
 
-module "create_ignitions" {
-  source = "./modules/create_ignitions"
+module "create_ignitions_bootstrap" {
+  source       = "./modules/create_ignitions"
+  node_network = var.node_network
+  cluster_name = var.ocp_cluster_name
+  node_config  = var.node_configs.bootstrap
+  root_path    = var.full_path
+  url_ignition = var.url_ignition
+  type         = "bootstrap"
+}
 
+module "create_ignitions_master" {
+  source       = "./modules/create_ignitions"
+  node_network = var.node_network
+  cluster_name = var.ocp_cluster_name
+  node_config  = var.node_configs.master
+  root_path    = var.full_path
+  url_ignition = var.url_ignition
+  type         = "master"
+}
+module "create_ignitions_worker" {
+  source       = "./modules/create_ignitions"
+  node_network = var.node_network
+  cluster_name = var.ocp_cluster_name
+  node_config  = var.node_configs.worker
+  root_path    = var.full_path
+  url_ignition = var.url_ignition
+  type         = "worker"
+}
+module "create_ignitions_infra" {
+  source       = "./modules/create_ignitions"
+  node_network = var.node_network
+  cluster_name = var.ocp_cluster_name
+  node_config  = var.node_configs.infra
+  root_path    = var.full_path
+  url_ignition = var.url_ignition
+  type         = "worker"
+}
+module "create_ignitions_logging" {
+  source       = "./modules/create_ignitions"
+  node_network = var.node_network
+  cluster_name = var.ocp_cluster_name
+  node_config  = var.node_configs.logging
+  root_path    = var.full_path
+  url_ignition = var.url_ignition
+  type         = "worker"
 }
 
 module "bootstrap" {
@@ -94,10 +130,8 @@ module "bootstrap" {
   guest_id         = module.template.guest_id
   adapter_type     = module.template.adapter_type[0].adapter_type
   template_uuid    = module.template.template_id
-  vm_data          = var.virtual_machines.bootstrap
-  node_network     = var.node_network
-  cluster_name     = var.ocp_cluster_name
-  node_config      = var.node_configs.bootstrap
+  vm_data          = module.create_ignitions_bootstrap.data
+  machine_config   = var.node_configs.bootstrap
 }
 
 module "master" {
@@ -110,7 +144,8 @@ module "master" {
   guest_id         = module.template.guest_id
   adapter_type     = module.template.adapter_type[0].adapter_type
   template_uuid    = module.template.template_id
-  vm_data          = var.virtual_machines.master
+  vm_data          = module.create_ignitions_master.data
+  machine_config   = var.node_configs.master
 }
 
 module "worker" {
@@ -123,7 +158,8 @@ module "worker" {
   guest_id         = module.template.guest_id
   adapter_type     = module.template.adapter_type[0].adapter_type
   template_uuid    = module.template.template_id
-  vm_data          = var.virtual_machines.worker
+  vm_data          = module.create_ignitions_worker.data
+  machine_config   = var.node_configs.worker
 }
 
 module "infra" {
@@ -136,7 +172,8 @@ module "infra" {
   guest_id         = module.template.guest_id
   adapter_type     = module.template.adapter_type[0].adapter_type
   template_uuid    = module.template.template_id
-  vm_data          = var.virtual_machines.infra
+  vm_data          = module.create_ignitions_infra.data
+  machine_config   = var.node_configs.infra
 }
 
 module "logging" {
@@ -149,7 +186,8 @@ module "logging" {
   guest_id         = module.template.guest_id
   adapter_type     = module.template.adapter_type[0].adapter_type
   template_uuid    = module.template.template_id
-  vm_data          = var.virtual_machines.logging
+  vm_data          = module.create_ignitions_logging.data
+  machine_config   = var.node_configs.logging
 }
 
 output machine {

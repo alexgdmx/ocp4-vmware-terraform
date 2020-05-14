@@ -10,7 +10,7 @@
 
 resource "vsphere_virtual_machine" "clone" {
   count            = length(var.vm_data)
-  name             = tomap(var.vm_data[count.index]).name
+  name             = var.machine_config.hostname[count.index]
   folder           = var.folder
   resource_pool_id = var.resource_pool_id
   host_system_id   = var.host_system_id
@@ -19,8 +19,8 @@ resource "vsphere_virtual_machine" "clone" {
   wait_for_guest_net_timeout = -1
   wait_for_guest_net_routable = false
 
-  num_cpus = 4
-  memory   = 16384
+  num_cpus = var.machine_config.cpu
+  memory   = var.machine_config.memory
   guest_id = var.guest_id
 
   network_interface {
@@ -31,8 +31,8 @@ resource "vsphere_virtual_machine" "clone" {
   disk {
     # eagerly_scrub    = false
     thin_provisioned = true
-    label            = "disk00"
-    size             = 120
+    label            = "disk0"
+    size             = var.machine_config.disk
   }
 
   clone {
@@ -42,7 +42,7 @@ resource "vsphere_virtual_machine" "clone" {
 
   vapp {
     properties = {
-      "guestinfo.ignition.config.data"          = tomap(var.vm_data[count.index]).data64
+      "guestinfo.ignition.config.data"          = base64encode(var.vm_data[count.index])
       "guestinfo.ignition.config.data.encoding" = "base64"
     }
   }

@@ -7,25 +7,27 @@
 # __email__ = "alexgd.devops@gmail.com"
 # __status__ = "Dev"
 
+## VSPHERE CONFIGURATIONS, SHOULD BE THE SAME IN YOU install-config.yaml
 vsphere_user     = "administrator@sni.com.mx"
 vsphere_password = "Password123!"
 vsphere_server   = "vcenter.sni.com.mx"
 
 datacenter = "BHM"
-datastore = "datastore1"
-cluster = "sni"
+datastore = "SAS-6K"
 network = "VM Network"
-resource_pool = "sni/Resources"
+resource_pool = "Resources"
 host = "esxi67.sni.com.mx"
 
+## TEMPLATE NAME DESIRED
 template = {
     name     = "rhcos-4.4.3-template"
     ovf_name = "coreos.ovf"
 }
 
+## OCP NODES NETWORKING
 node_network = {
   netmask    = "255.255.254.0"
-  nm_num     = 23
+  prefix     = 23
   gateway    = "10.56.240.254"
   dns        = "10.56.240.1"
   ocp_domain = "sni.com.mx"
@@ -33,6 +35,10 @@ node_network = {
 
 ocp_cluster_name = "ocp4"
 
+## WEBSERVER CONTAINING THE IGNINTIO FILES
+url_ignition = "http://10.56.241.10"
+
+## NODE INFORMATIOM
 node_configs = {
   bootstrap = {
     ip       = ["10.56.241.12"]
@@ -42,7 +48,7 @@ node_configs = {
     disk     = 120
   }
   master = {
-    ip       = ["10.56.241.13", "10.56.241.14", "10.56.241,15"]
+    ip       = ["10.56.241.13", "10.56.241.14", "10.56.241.15"]
     hostname = ["master01", "master02", "master03"]
     cpu      = 4
     memory   = 16384

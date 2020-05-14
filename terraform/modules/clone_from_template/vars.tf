@@ -47,18 +47,8 @@ variable "ignition_config_data" {
   default = ""
 }
 
-variable "vm_data" {
-  type = list
-}
+variable "vm_data" {}
 
-variable node_network {
-  default = {}
-}
-
-variable cluster_name {
-  default = ""
-}
-
-variable node_config {
-  default = {}
+variable machine_config {
+  default = []
 }

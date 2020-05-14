@@ -1,0 +1,7 @@
+[Unit]
+ConditionFirstBoot=yes
+[Service]
+Type=idle
+ExecStart=/sbin/reboot
+[Install]
+WantedBy=multi-user.target

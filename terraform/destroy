@@ -2,4 +2,4 @@
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-terraform destroy -var="full_path=${DIR}" -var-file=${DIR}/vars/common.tfvars -var-file=${DIR}/vars/machine_data.tfvars $1
+terraform destroy -var="full_path=${DIR}" -var-file=${DIR}/vars/common.tfvars $1
