@@ -26,19 +26,76 @@ At the end of the boot process the VM will take the IP provided by the ignition 
 - Copy the 3 ignitions files to your webserver.
 - Download the OVA image from the [mirror repository](https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/latest/latest/rhcos-4.4.3-x86_64-vmware.x86_64.ova) to the ``terraform/`` folder.
 - **Optional** ``install-config.yaml`` file.
-- **Optional:** The fist section of **script** ``go.sh`` create the ignition files and copy to the webserver, if you already did this process you can delete that part and start from the **Terraforn deployment** section.
+- **Optional:** The fist section of **script** ``go.sh`` create the ignition files and copy to the webserver, if you already did this process you can delete that part and start from the **Terraforn deployment** section of the script.
 
 
 ## Procedure
-1. Edit the file ``terraform/vars/common.tfvars`` with the values of your installation; vmware configuration and Openshift configuration.
+If you want to create all running the ``go.sh`` script.
+1. Place the ``install-config.yaml`` in the root of this git repo.
 
-2. Extract the contents from the OVA file, wi will get 2 files: ``coreos.ovf`` and ``disk.vmdk``.
+2. Update the ``go.sh`` script with the path or webserver to copy the ignition files to the webserver.
+```bash
+scp deploy/*.ign root@bastion.ocp4.sni.com.mx:/var/www/html/
+ssh root@bastion.ocp4.sni.com.mx 'chmod 644 /var/www/html/*.ign'
+# cp -f deploy/*.ign /var/www/html/
+# chmod 644 chmod 644 /var/www/html/*.ign
+```
+
+3. Edit the file ``terraform/vars/common.tfvars`` with the values of your installation; vmware configuration and Openshift configuration.
+```bash
+## VSPHERE CONFIGURATIONS, SHOULD BE THE SAME IN YOU install-config.yaml
+vsphere_user     = "administrator@sni.com.mx"
+vsphere_password = "Password123!"
+vsphere_server   = "vcenter.sni.com.mx"
+#
+datacenter = "BHM"
+datastore = "SAS-6K"
+network = "VM Network"
+resource_pool = "Resources"
+host = "esxi67.sni.com.mx"
+.
+.
+.
+```
+
+4. Extract the contents from the [OVA](https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/latest/latest/rhcos-4.4.3-x86_64-vmware.x86_64.ova) file to the ``terraform/`` folder, wi will get 2 files: ``coreos.ovf`` and ``disk.vmdk``.
 ```bash
 ../terraform$ tar xvf rhcos-4.4.3-x86_64-vmware.x86_64.ova
 coreos.ovf
 disk.vmdk
 ```
-3. I made an script ``go.sh`` with all steps
+
+5. Run the script ``go.sh``, and wait to finish.
+
+```bash
+terraform$ ./go.sh
++++ dirname ./go.sh
+++ cd .
+++ pwd
++ DIR=/home/alex/work/RedHat/ocp4-vmware-terraform
++ rm -fr deploy
++ mkdir deploy
++ cp install-config.yaml deploy/
++ openshift-install create manifests --dir=deploy
+INFO Consuming Install Config from target directory
+WARNING Making control-plane schedulable by setting MastersSchedulable to true for Scheduler cluster settings
++ sed -i s/true/false/g deploy/manifests/cluster-scheduler-02-config.yml
++ openshift-install create ignition-configs --dir=deploy
+INFO Consuming OpenShift Install (Manifests) from target directory
+INFO Consuming Openshift Manifests from target directory
+INFO Consuming Master Machines from target directory
+INFO Consuming Worker Machines from target directory
+INFO Consuming Common Manifests from target directory
++ scp deploy/bootstrap.ign deploy/master.ign deploy/worker.ign root@bastion.ocp4.sni.com.mx:/var/www/html/
+Warning: Permanently added 'bastion.ocp4.sni.com.mx,10.56.241.10' (ECDSA) to the list of known hosts.
+bootstrap.ign                                                                                                              100%  299KB  20.5MB/s   00:00
+master.ign                                                                                                                 100% 1820   994.2KB/s   00:00
+worker.ign                                                                                                                 100% 1820     1.1MB/s   00:00
++ ssh root@bastion.ocp4.sni.com.mx 'chmod 644 /var/www/html/*.ign'
+Warning: Permanently added 'bastion.ocp4.sni.com.mx,10.56.241.10' (ECDSA) to the list of known hosts.
+```
+
+6. Continue with the **oc commands** to complete the installation, approving CRS, etc. etc.
 
 #### Destroy
 You can easily destroy the bootstrap once you don't need it anymore.
@@ -86,9 +143,7 @@ Do you really want to destroy all resources?
 References
 - https://docs.openshift.com/container-platform/4.3/installing/installing_vsphere/installing-vsphere.html
 - https://docs.openshift.com/container-platform/4.3/installing/installing_bare_metal/installing-bare-metal.html
-- https://github.com/pyenv/pyenv
 - https://www.terraform.io/
 - https://github.com/terraform-providers/terraform-provider-vsphere
-- https://github.com/vmware/govmomi/tree/master/govc
 - https://coreos.com/ignition/docs/latest/network-configuration.html
 - https://coreos.com/ignition/docs/latest/examples.html
