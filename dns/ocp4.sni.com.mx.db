@@ -1,0 +1,45 @@
+$ORIGIN .
+$TTL 1; 1 seconds (for testing only)
+ocp4.sni.com.mx         IN SOA  ns1.ocp4.sni.com.mx. hostmaster.ocp4.sni.com.mx. (
+                                2011112904 ; serial
+                                60         ; refresh (1 minute)
+                                15         ; retry (15 seconds)
+                                1800       ; expire (30 minutes)
+                                10         ; minimum (10 seconds)
+                                )
+                        NS      ns1.ocp4.sni.com.mx.
+                        ;MX      10 mail.ocp4sni.com.mx.
+$ORIGIN ocp4.sni.com.mx.
+ns1                     A       10.56.241.1
+
+esxi67                  A       10.56.241.5
+
+bastion                 A       10.56.241.10
+
+lb                      A       10.56.241.11
+api                     A       10.56.241.11
+api-int                 A       10.56.241.11
+*.apps                  A       10.56.241.11
+
+bootstrap               A       10.56.241.12
+
+master01                A       10.56.241.13
+master02                A       10.56.241.14
+master03                A       10.56.241.15
+
+etcd-0                  A       10.56.241.13
+etcd-1                  A       10.56.241.14
+etcd-2                  A       10.56.241.15
+
+_etcd-server-ssl._tcp  86400 IN    SRV 0        10     2380 etcd-0
+_etcd-server-ssl._tcp  86400 IN    SRV 0        10     2380 etcd-1
+_etcd-server-ssl._tcp  86400 IN    SRV 0        10     2380 etcd-2
+
+worker01                A       10.56.241.16
+worker02                A       10.56.241.17
+
+infra01                 A       10.56.241.18
+infra02                 A       10.56.241.19
+
+logging01               A       10.56.241.20
+logging02               A       10.56.241.21

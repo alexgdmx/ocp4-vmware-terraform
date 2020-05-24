@@ -1,0 +1,42 @@
+$ORIGIN 56.10.in-addr.arpa.
+$TTL 1; 1 seconds (for testing only)
+@                       IN SOA  ns1.sni.com.mx. hostmaster.sni.com.mx. (
+                                2011112904 ; serial
+                                60         ; refresh (1 minute)
+                                15         ; retry (15 seconds)
+                                1800       ; expire (30 minutes)
+                                10         ; minimum (10 seconds)
+                                )
+$ORIGIN 56.10.in-addr.arpa.
+        IN      NS      ns1.sni.com.mx.
+1.240   IN      PTR     dns01.sni.com.mx.
+
+5.240   IN      PTR     esxi67.sni.com.mx.
+6.240   IN      PTR     vcenter.sni.com.mx.
+
+5.241   IN      PTR     esxi67.ocp4.sni.com.mx.
+
+10.241    IN        PTR     bastion.ocp4.sni.com.mx.
+
+11.241    IN        PTR     lb.ocp4.sni.com.mx.
+11.241    IN        PTR     api.ocp4.sni.com.mx.
+11.241    IN        PTR     api-int.ocp4.sni.com.mx.
+
+12.241    IN        PTR     bootstrap.ocp4.sni.com.mx.
+
+13.241    IN        PTR     master01.ocp4.sni.com.mx.
+14.241    IN        PTR     master02.ocp4.sni.com.mx.
+15.241    IN        PTR     master03.ocp4.sni.com.mx.
+
+13.241    IN        PTR     etcd-0.ocp4.sni.com.mx.
+14.241    IN        PTR     etcd-1.ocp4.sni.com.mx.
+15.241    IN        PTR     etcd-2.ocp4.sni.com.mx.
+
+16.241    IN        PTR     worker01.ocp4.sni.com.mx.
+17.241    IN        PTR     worker02.ocp4.sni.com.mx.
+
+18.241    IN        PTR     infra01.ocp4.sni.com.mx.
+19.241    IN        PTR     infra02.ocp4.sni.com.mx.
+
+20.241    IN        PTR     logging01.ocp4.sni.com.mx.
+21.241    IN        PTR     logging02.ocp4.sni.com.mx.
