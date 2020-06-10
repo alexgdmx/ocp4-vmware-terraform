@@ -1,7 +1,9 @@
 [Unit]
 ConditionFirstBoot=yes
+Before=NetworkManager.service
 [Service]
 Type=idle
 ExecStart=/sbin/reboot
 [Install]
-WantedBy=multi-user.target
+#WantedBy=multi-user.target
+WantedBy=network.target
